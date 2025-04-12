@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roommate Finder</title>
+    <link rel="stylesheet" href="1stpage.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css">
+    <style>
+        /* Inline essential styles for demo */
+        
+
+        .dropdown {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: bold;
+        }
+
+        .arrow {
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 30px;
+            left: 0;
+            background-color: #216390;
+            padding: 10px;
+            border: 1px solid #911e1e;
+            min-width: 200px;
+            z-index: 10;
+            box-shadow: 0 2px 10px rgba(99, 37, 37, 0.1);
+        }
+
+        .dropdown.active .dropdown-content {
+            display: block;
+        }
+
+        /* Optional: for better UX */
+        .dropdown-content p {
+            margin: 0;
+            padding: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="main">
+        <div id="header">
+            <div id="logo">
+                <img src="logo-removebg-preview.png" alt="Logo">
+            </div>
+            <div id="text">
+                <h4>Uniting People</h4>
+                <h4>By Tech</h4>
+            </div>
+            <div id="login">
+                <i class="ri-user-fill"></i>
+                <p>Login</p>
+            </div>
+        </div>
+
+        <div id="page1">
+            <!-- DROPDOWN MENU SECTION -->
+            <div id="strip">
+                <div class="dropdown">
+                    <span>What We Do</span>
+                    <i class="ri-arrow-drop-down-line arrow" data-dropdown="1"></i>
+                    <div class="dropdown-content" id="dropdown-1">
+                        <p>We help connect roommates based on shared preferences and needs.</p>
+                        <p>Simple, fast, and reliable matching system.</p>
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <span>Who We Are</span>
+                    <i class="ri-arrow-drop-down-line arrow" data-dropdown="2"></i>
+                    <div class="dropdown-content" id="dropdown-2">
+                        <p>We’re a team of passionate college students solving real-life problems.</p>
+                        <p>Our mission: Make roommate finding effortless.</p>
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <span>How We Work</span>
+                    <i class="ri-arrow-drop-down-line arrow" data-dropdown="3"></i>
+                    <div class="dropdown-content" id="dropdown-3">
+                        <p>You can either post your room details or search for one.</p>
+                        <p>Filters help you find your ideal match fast.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MAIN CONTENT -->
+            <div id="content">
+                <div id="box1">
+                    <h2>FROM VISION TO REALITY :</h2>
+                    <p>Paving the way to find a perfect roomie!</p>
+                    <div class="buttons">
+                        <a class="button1" href="search.html?type=room" target="_main">Want a Room</a>
+                        <a class="button2" href="search.html?type=want a roommate" target="_main">Want a Roommate</a>
+                    </div>
+                </div>
+                <div id="box2">
+                    <img src="hack.jpg" alt="Roommate Search Image">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JS for toggling dropdowns -->
+    <script>
+        const arrows = document.querySelectorAll('.arrow');
+
+        arrows.forEach(arrow => {
+            arrow.addEventListener('click', (e) => {
+                const dropdownId = e.target.getAttribute('data-dropdown');
+                const dropdownContent = document.getElementById(`dropdown-${dropdownId}`);
+                const parentDropdown = e.target.parentElement;
+
+                // Toggle active state
+                const isActive = parentDropdown.classList.contains('active');
+                document.querySelectorAll('.dropdown').forEach(d => d.classList.remove('active'));
+                if (!isActive) {
+                    parentDropdown.classList.add('active');
+                }
+            });
+        });
+
+        // Optional: Close dropdowns when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.dropdown')) {
+                document.querySelectorAll('.dropdown').forEach(d => d.classList.remove('active'));
+            }
+        });
+    </script>
+</body>
+</html>

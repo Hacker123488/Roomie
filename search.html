@@ -1,0 +1,189 @@
+<!-- search.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Search</title>
+</head>
+<style>
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f4f6f8;
+    margin: 0;
+    padding: 20px;
+  }
+
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #2c3e50;
+  }
+
+  .form-container {
+    max-width: 600px;
+    margin: 0 auto;
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  }
+
+  label {
+    display: block;
+    margin: 10px 0 5px;
+  }
+
+  input, textarea, select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    background-color: #3498db;
+    color: white;
+    font-weight: bold;
+    font-size: 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-bottom: 10px;
+  }
+
+  .login-btn {
+    background-color: #2ecc71;
+  }
+
+  .login-btn:hover {
+    background-color: #27ae60;
+  }
+
+  .forgot-btn {
+    background-color: #e67e22;
+  }
+
+  .forgot-btn:hover {
+    background-color: #d35400;
+  }
+
+  .form-title {
+    margin-bottom: 30px;
+  }
+</style>
+<body style="font-family:sans-serif; padding:30px; max-width:600px; margin:auto;">
+
+  <h2 id="formTitle">Loading...</h2>
+
+  <button onclick="signup()">Sign Up</button>
+  <button onclick="login()">Log In</button>
+  <button onclick="forgotPassword()">Forgot Password?</button>
+
+  <form id="searchForm" style="margin-top:20px;">
+    <div id="formFields"></div>
+    <button type="submit">Submit</button>
+  </form>
+
+  <script>
+    const type = new URLSearchParams(window.location.search).get("type");
+    const formTitle = document.getElementById("formTitle");
+    const formFields = document.getElementById("formFields");
+
+    if (type === "room") {
+      formTitle.innerText = "Search for a Room";
+      formFields.innerHTML = `
+        <label>Locality:</label><input name="locality" required><br>
+        <label>Accessibility:</label><input name="accessibility" required><br>
+        <label>Price:</label><input name="price" required><br>
+        <label>Expenses Included:</label><input name="expenses" required><br>
+        <label>Facilities:</label><textarea name="facilities" required></textarea><br>
+      `;
+    } else {
+      formTitle.innerText = "Search for a Roommate";
+      formFields.innerHTML = `
+        <label>Locality:</label><input name="locality" required><br>
+        <label>Budget:</label><input name="budget" required><br>
+        <label>Preferences:</label><textarea name="preferences" required></textarea><br>
+        <label>Shared Facilities:</label><textarea name="shared" required></textarea><br>
+        <label>Nearby Facilities:</label><textarea name="nearby" required></textarea><br>
+      `;
+    }
+
+    function signup() {
+      const name = prompt("Enter your username:");
+      const email = prompt("Enter your email:");
+      const mobile = prompt("Enter your 10-digit mobile number:");
+      const password = prompt("Set a password:");
+
+      if (!name || !email || !mobile || !password) {
+        alert("All fields are required.");
+        return;
+      }
+
+      if (!/^\d{10}$/.test(mobile)) {
+        alert("Mobile number must be exactly 10 digits.");
+        return;
+      }
+
+      const user = { name, email, mobile, password };
+      localStorage.setItem("user_" + name, JSON.stringify(user));
+      localStorage.setItem("loggedInUser", name);
+      alert("Signup successful!");
+    }
+
+    function login() {
+      const name = prompt("Enter your username:");
+      const password = prompt("Enter your password:");
+
+      const userData = localStorage.getItem("user_" + name);
+      if (userData) {
+        const user = JSON.parse(userData);
+        if (user.password === password) {
+          localStorage.setItem("loggedInUser", name);
+          alert("Login successful!");
+        } else {
+          alert("Incorrect password.");
+        }
+      } else {
+        alert("User not found.");
+      }
+    }
+
+    function forgotPassword() {
+      const name = prompt("Enter your username:");
+      const userData = localStorage.getItem("user_" + name);
+      if (userData) {
+        const user = JSON.parse(userData);
+        // Simulate sending password to phone
+        alert("Password has been sent to your registered mobile number: " + user.mobile);
+      } else {
+        alert("User not found.");
+      }
+    }
+
+    document.getElementById("searchForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const userName = localStorage.getItem("loggedInUser");
+      if (!userName) {
+        alert("Please log in or sign up first.");
+        return;
+      }
+
+      const user = JSON.parse(localStorage.getItem("user_" + userName));
+      const formData = Object.fromEntries(new FormData(e.target).entries());
+
+      localStorage.setItem("formData", JSON.stringify(formData));
+      localStorage.setItem("searchType", type);
+      localStorage.setItem("userEmail", user.email);
+      localStorage.setItem("userMobile", user.mobile);
+      localStorage.setItem("userName", user.name);
+
+      window.location.href = "userinfo.html";
+    });
+  </script>
+
+</body>
+</html>

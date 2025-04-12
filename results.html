@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="results"></div>
+  
+    <script>
+      // Simulated database
+      const roomsDatabase = [
+    {
+      id: 1,
+      type: "1BHK",
+      area: "Kankarbagh",
+      rent: 7000,
+      sharing: "Private",
+      available: true,
+      contact: "9876543210"
+    },
+    {
+      id: 2,
+      type: "2BHK",
+      area: "Boring Road",
+      rent: 12000,
+      sharing: "Private",
+      available: true,
+      contact: "9988776655"
+    },
+    {
+      id: 3,
+      type: "Shared",
+      area: "Patliputra",
+      rent: 4000,
+      sharing: "2-sharing",
+      available: false,
+      contact: "9123456780"
+    },
+    {
+      id: 4,
+      type: "Shared",
+      area: "Kankarbagh",
+      rent: 3500,
+      sharing: "3-sharing",
+      available: true,
+      contact: "9865321470"
+    },
+    // Add more entries as needed
+  ];
+  
+      const urlParams = new URLSearchParams(window.location.search);
+      const type = urlParams.get('type');
+      const area = urlParams.get('area');
+  
+      const filteredRooms = roomsDatabase.filter(room =>
+        room.type === type && room.area === area && room.available
+      );
+  
+      const resultsDiv = document.getElementById("results");
+  
+      if (filteredRooms.length === 0) {
+        resultsDiv.innerHTML = "<p>No rooms found matching your criteria.</p>";
+      } else {
+        filteredRooms.forEach(room => {
+          const roomCard = document.createElement("div");
+          roomCard.innerHTML = `
+            <h3>${room.type} in ${room.area}</h3>
+            <p>Rent: ₹${room.rent}</p>
+            <p>Sharing: ${room.sharing}</p>
+            <p>Contact: ${room.contact}</p>
+            <hr>
+          `;
+          resultsDiv.appendChild(roomCard);
+        });
+      }
+    </script>
+</body>
+</html>
+    
+  

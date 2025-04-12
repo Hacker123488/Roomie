@@ -1,0 +1,41 @@
+<!-- userinfo.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>User Info</title>
+</head>
+<body style="font-family:sans-serif; padding:30px; max-width:600px; margin:auto;">
+
+  <h2>User Information</h2>
+  <div id="userInfo"></div>
+
+  <script>
+    const name = localStorage.getItem("userName");
+    const email = localStorage.getItem("userEmail");
+    const mobile = localStorage.getItem("userMobile");
+    const type = localStorage.getItem("searchType");
+    const formData = JSON.parse(localStorage.getItem("formData"));
+
+    const output = document.getElementById("userInfo");
+
+    if (!name || !formData) {
+      output.innerHTML = "<p style='color:red;'>Error: Data not found. Please go back and submit the form again.</p>";
+    } else {
+      let html = `
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Mobile:</strong> ${mobile}</p>
+        <p><strong>Search Type:</strong> ${type}</p>
+        <hr>
+      `;
+
+      for (const [key, value] of Object.entries(formData)) {
+        html += `<p><strong>${key}:</strong> ${value}</p>`;
+      }
+
+      output.innerHTML = html;
+    }
+  </script>
+
+</body>
+</html>
